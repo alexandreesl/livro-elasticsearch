@@ -1,10 +1,15 @@
 package br.com.alexandreesl.handson.rest;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.inject.Named;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -16,57 +21,57 @@ import br.com.alexandreesl.handson.domain.Cliente;
 @Path("/")
 public class ClienteRestService {
 
-	private static List<Cliente> clients = new ArrayList<Cliente>();
+	private static Map<Long, Cliente> clientes = new HashMap<Long, Cliente>();
 
 	static {
 
-		Cliente customer1 = new Cliente();
-		customer1.setId(1);
-		customer1.setNome("Cliente 1");
-		customer1.setEmail("customer1@gmail.com");
+		Cliente cliente1 = new Cliente();
+		cliente1.setId(1);
+		cliente1.setNome("Cliente 1");
+		cliente1.setEmail("customer1@gmail.com");
 
-		Cliente customer2 = new Cliente();
-		customer2.setId(2);
-		customer2.setNome("Cliente 2");
-		customer2.setEmail("customer2@gmail.com");
+		Cliente cliente2 = new Cliente();
+		cliente2.setId(2);
+		cliente2.setNome("Cliente 2");
+		cliente2.setEmail("customer2@gmail.com");
 
-		Cliente customer3 = new Cliente();
-		customer3.setId(3);
-		customer3.setNome("Cliente 3");
-		customer3.setEmail("customer3@gmail.com");
+		Cliente cliente3 = new Cliente();
+		cliente3.setId(3);
+		cliente3.setNome("Cliente 3");
+		cliente3.setEmail("customer3@gmail.com");
 
-		Cliente customer4 = new Cliente();
-		customer4.setId(4);
-		customer4.setNome("Cliente 4");
-		customer4.setEmail("customer4@gmail.com");
+		Cliente cliente4 = new Cliente();
+		cliente4.setId(4);
+		cliente4.setNome("Cliente 4");
+		cliente4.setEmail("customer4@gmail.com");
 
-		Cliente customer5 = new Cliente();
-		customer5.setId(5);
-		customer5.setNome("Cliente 5");
-		customer5.setEmail("customer5@gmail.com");
+		Cliente cliente5 = new Cliente();
+		cliente5.setId(5);
+		cliente5.setNome("Cliente 5");
+		cliente5.setEmail("customer5@gmail.com");
 
-		clients.add(customer1);
-		clients.add(customer2);
-		clients.add(customer3);
-		clients.add(customer4);
-		clients.add(customer5);
+		clientes.put(cliente1.getId(), cliente1);
+		clientes.put(cliente2.getId(), cliente2);
+		clientes.put(cliente3.getId(), cliente3);
+		clientes.put(cliente4.getId(), cliente4);
+		clientes.put(cliente5.getId(), cliente5);
 
 	}
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Cliente> getClientes() {
-		return clients;
+	public Collection<Cliente> getClientes() {
+		return clientes.values();
 	}
 
 	@GET
-	@Path("customer")
+	@Path("cliente")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Cliente getCliente(@QueryParam("id") long id) {
 
 		Cliente cli = null;
 
-		for (Cliente c : clients) {
+		for (Cliente c : clientes.values()) {
 
 			if (c.getId() == id)
 				cli = c;
@@ -74,6 +79,30 @@ public class ClienteRestService {
 		}
 
 		return cli;
+	}
+
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void addCliente(Cliente cliente) {
+
+		clientes.put(cliente.getId(), cliente);
+
+	}
+
+	@PUT
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void mergeCliente(Cliente cliente) {
+
+		Cliente temp = clientes.get(cliente.getId());
+
+		temp.setNome(cliente.getNome());
+		temp.setEmail(cliente.getEmail());
+
+	}
+
+	@DELETE
+	public void deleteCliente(@QueryParam("id") long id) {
+		clientes.remove(id);
 	}
 
 }
