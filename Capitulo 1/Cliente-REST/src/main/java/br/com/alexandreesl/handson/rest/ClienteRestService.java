@@ -15,13 +15,20 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import br.com.alexandreesl.handson.domain.Cliente;
 
 @Named
 @Path("/")
 public class ClienteRestService {
 
+	private static final Logger logger = LogManager.getLogger(ClienteRestService.class.getName());
+
 	private static Map<Long, Cliente> clientes = new HashMap<Long, Cliente>();
+
+	private long contadorErroCaotico;
 
 	static {
 
@@ -61,6 +68,9 @@ public class ClienteRestService {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Collection<Cliente> getClientes() {
+
+			logger.info("Foram buscados " + clientes.values().size() + " clientes");
+
 		return clientes.values();
 	}
 
@@ -78,12 +88,22 @@ public class ClienteRestService {
 
 		}
 
+		logger.info("foi buscado o cliente " + cli.getNome());
+
 		return cli;
 	}
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public void addCliente(Cliente cliente) {
+
+		if ((contadorErroCaotico * Math.random()) / 6 == 0) {
+			throw new RuntimeException("Ocorreu um erro caótico!");
+		}
+
+		contadorErroCaotico++;
+
+		logger.warn("O cliente " + cliente.getId() + " foi inserido!");
 
 		clientes.put(cliente.getId(), cliente);
 
@@ -92,6 +112,8 @@ public class ClienteRestService {
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
 	public void mergeCliente(Cliente cliente) {
+
+		logger.info("O cliente " + cliente.getId() + " foi alterado!");
 
 		Cliente temp = clientes.get(cliente.getId());
 
@@ -102,6 +124,9 @@ public class ClienteRestService {
 
 	@DELETE
 	public void deleteCliente(@QueryParam("id") long id) {
+
+		logger.info("O cliente " + id + " foi alterado!");
+
 		clientes.remove(id);
 	}
 
