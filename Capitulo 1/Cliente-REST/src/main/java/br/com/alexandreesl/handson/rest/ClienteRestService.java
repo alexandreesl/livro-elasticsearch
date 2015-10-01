@@ -15,8 +15,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import br.com.alexandreesl.handson.domain.Cliente;
 
@@ -69,7 +69,7 @@ public class ClienteRestService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Collection<Cliente> getClientes() {
 
-			logger.info("Foram buscados " + clientes.values().size() + " clientes");
+		logger.info("Foram buscados " + clientes.values().size() + " clientes");
 
 		return clientes.values();
 	}
@@ -96,6 +96,8 @@ public class ClienteRestService {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public void addCliente(Cliente cliente) {
+		
+		contadorErroCaotico++;
 
 		if ((contadorErroCaotico * Math.random()) / 6 == 0) {
 			throw new RuntimeException("Ocorreu um erro caótico!");
