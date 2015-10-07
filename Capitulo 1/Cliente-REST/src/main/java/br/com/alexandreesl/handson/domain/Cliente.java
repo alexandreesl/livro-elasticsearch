@@ -32,4 +32,12 @@ public class Cliente {
 		this.email = email;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+
+		Cliente cliente = (Cliente) obj;
+
+		return id == cliente.getId() ? true : false;
+	}
+
 }
