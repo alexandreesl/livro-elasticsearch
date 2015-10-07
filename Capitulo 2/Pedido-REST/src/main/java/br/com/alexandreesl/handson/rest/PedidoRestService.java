@@ -89,7 +89,7 @@ public class PedidoRestService {
 
 		}
 
-		logger.info("produto " + item.getItem().getIdProduto() + " incluido no pedido " + item.getIdPedido());
+		logger.info("pedido " + item.getIdPedido() + " adicionou o produto " + item.getItem().getIdProduto());
 
 	}
 
@@ -107,7 +107,7 @@ public class PedidoRestService {
 
 		}
 
-		logger.info("produto " + item.getItem().getIdProduto() + " removido do pedido " + item.getIdPedido());
+		logger.info("pedido " + item.getIdPedido() + " removeu o produto " + item.getItem().getIdProduto());
 
 	}
 
@@ -125,7 +125,7 @@ public class PedidoRestService {
 
 		}
 
-		logger.info("pedido " + idPedido + " pago");
+		logger.info("pedido " + idPedido + " efetivado");
 
 	}
 
