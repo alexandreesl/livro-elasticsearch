@@ -15,9 +15,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import br.com.alexandreesl.handson.domain.Pedido;
 import br.com.alexandreesl.handson.domain.StatusPedido;
 import br.com.alexandreesl.handson.dto.ItemPedidoDTO;
@@ -27,10 +24,6 @@ import br.com.alexandreesl.handson.dto.ItemPedidoDTO;
 public class PedidoRestService {
 
 	private List<Pedido> pedidosMock;
-
-	private static final Logger logger = LogManager.getLogger(PedidoRestService.class.getName());
-
-	private long contadorErroCaotico;
 
 	@GET
 	@Path("pedido")
@@ -45,8 +38,6 @@ public class PedidoRestService {
 				pedidos.add(pedido);
 		}
 
-		logger.info("cliente " + idCliente + " possui " + pedidos.size() + " pedidos");
-
 		return pedidos;
 
 	}
@@ -55,12 +46,6 @@ public class PedidoRestService {
 	@Path("item/adiciona")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public void adicionaItemPedido(ItemPedidoDTO item) {
-
-		contadorErroCaotico++;
-
-		if ((contadorErroCaotico * Math.random()) / 6 == 0) {
-			throw new RuntimeException("Ocorreu um erro caótico!");
-		}
 
 		// se for pedido novo, cria, senao somente adiciona o item
 
@@ -89,8 +74,6 @@ public class PedidoRestService {
 
 		}
 
-		logger.info("produto " + item.getItem().getIdProduto() + " incluido no pedido " + item.getIdPedido());
-
 	}
 
 	@POST
@@ -106,8 +89,6 @@ public class PedidoRestService {
 			}
 
 		}
-
-		logger.info("produto " + item.getItem().getIdProduto() + " removido do pedido " + item.getIdPedido());
 
 	}
 
@@ -125,8 +106,6 @@ public class PedidoRestService {
 
 		}
 
-		logger.info("pedido " + idPedido + " pago");
-
 	}
 
 	@DELETE
@@ -142,8 +121,6 @@ public class PedidoRestService {
 			}
 
 		}
-
-		logger.info("pedido " + idPedido + " cancelado");
 
 	}
 
