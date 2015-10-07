@@ -96,14 +96,12 @@ public class ClienteRestService {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public void addCliente(Cliente cliente) {
-		
+
 		contadorErroCaotico++;
 
 		if ((contadorErroCaotico * Math.random()) / 6 == 0) {
 			throw new RuntimeException("Ocorreu um erro caótico!");
 		}
-
-		contadorErroCaotico++;
 
 		logger.warn("O cliente " + cliente.getId() + " foi inserido!");
 
