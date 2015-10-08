@@ -28,7 +28,7 @@ public class ClienteRestService {
 
 	private static Map<Long, Cliente> clientes = new HashMap<Long, Cliente>();
 
-	private long contadorErroCaotico;
+	private static long contadorErroCaotico;
 
 	static {
 
