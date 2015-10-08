@@ -26,125 +26,135 @@ import br.com.alexandreesl.handson.dto.ItemPedidoDTO;
 @Path("/")
 public class PedidoRestService {
 
-private List<Pedido> pedidosMock;
+	private static List<Pedido> pedidosMock = new ArrayList<Pedido>();
 
-private static final Logger logger = LogManager.getLogger(PedidoRestService.class.getName());
+	private static final Logger logger = LogManager.getLogger(PedidoRestService.class.getName());
 
-private long contadorErroCaotico;
+	private static long contadorErroCaotico;
 
-@GET
-@Path("pedido")
-@Produces(MediaType.APPLICATION_JSON)
-public List<Pedido> buscarPedidosPorCliente(@PathParam("idCliente") long idCliente) {
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Pedido> buscarPedidos() {
 
-List<Pedido> pedidos = new ArrayList<Pedido>();
+		logger.info("foram buscados todos os pedidos!");
 
-for (Pedido pedido : pedidosMock) {
+		return pedidosMock;
 
-if (pedido.getIdCliente() == idCliente)
-pedidos.add(pedido);
-}
+	}
 
-logger.info("cliente " + idCliente + " possui " + pedidos.size() + " pedidos");
+	@GET
+	@Path("pedido/{idCliente}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Pedido> buscarPedidosPorCliente(@PathParam("idCliente") long idCliente) {
 
-return pedidos;
+		List<Pedido> pedidos = new ArrayList<Pedido>();
 
-}
+		for (Pedido pedido : pedidosMock) {
 
-@POST
-@Path("item/adiciona")
-@Consumes(MediaType.APPLICATION_JSON)
-public void adicionaItemPedido(ItemPedidoDTO item) {
+			if (pedido.getIdCliente() == idCliente)
+				pedidos.add(pedido);
+		}
 
-contadorErroCaotico++;
+		logger.info("cliente " + idCliente + " possui " + pedidos.size() + " pedidos");
 
-if ((contadorErroCaotico * Math.random()) / 6 == 0) {
-throw new RuntimeException("Ocorreu um erro caótico!");
-}
+		return pedidos;
 
-// se for pedido novo, cria, senao somente adiciona o item
+	}
 
-boolean pedidoNovo = true;
+	@POST
+	@Path("item/adiciona")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void adicionaItemPedido(ItemPedidoDTO item) {
 
-for (Pedido pedido : pedidosMock) {
+		contadorErroCaotico++;
 
-if (pedido.getId() == item.getIdPedido()) {
-pedido.getItems().add(item.getItem());
+		if ((contadorErroCaotico * Math.random()) / 6 == 0) {
+			throw new RuntimeException("Ocorreu um erro caótico!");
+		}
 
-pedidoNovo = false;
-}
+		// se for pedido novo, cria, senao somente adiciona o item
 
-}
+		boolean pedidoNovo = true;
 
-if (pedidoNovo) {
-Pedido pedido = new Pedido();
+		for (Pedido pedido : pedidosMock) {
 
-pedido.setId(item.getIdPedido());
-pedido.setDataPedido(new Date());
-pedido.setIdCliente(item.getIdCliente());
-pedido.getItems().add(item.getItem());
-pedido.setStatus(StatusPedido.ABERTO);
+			if (pedido.getId() == item.getIdPedido()) {
+				pedido.getItems().add(item.getItem());
 
-pedidosMock.add(pedido);
+				pedidoNovo = false;
+			}
 
-}
+		}
 
-logger.info("pedido " + item.getIdPedido() + " adicionou o produto " + item.getItem().getIdProduto());
+		if (pedidoNovo) {
+			Pedido pedido = new Pedido();
 
-}
+			pedido.setId(item.getIdPedido());
+			pedido.setDataPedido(new Date());
+			pedido.setIdCliente(item.getIdCliente());
+			pedido.getItems().add(item.getItem());
+			pedido.setStatus(StatusPedido.ABERTO);
 
-@POST
-@Path("item/remove")
-@Consumes(MediaType.APPLICATION_JSON)
-public void removeItemPedido(ItemPedidoDTO item) {
+			pedidosMock.add(pedido);
 
-for (Pedido pedido : pedidosMock) {
+		}
 
-if (pedido.getId() == item.getIdPedido()) {
-pedido.getItems().remove(item.getItem());
+		logger.info("pedido " + item.getIdPedido() + " adicionou o produto " + item.getItem().getIdProduto());
 
-}
+	}
 
-}
+	@POST
+	@Path("item/remove")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void removeItemPedido(ItemPedidoDTO item) {
 
-logger.info("pedido " + item.getIdPedido() + " removeu o produto " + item.getItem().getIdProduto());
+		for (Pedido pedido : pedidosMock) {
 
-}
+			if (pedido.getId() == item.getIdPedido()) {
+				pedido.getItems().remove(item.getItem());
 
-@PUT
-@Path("pedido")
-public void pagaPedido(@PathParam("idPedido") long idPedido) {
+			}
 
-for (Pedido pedido : pedidosMock) {
+		}
 
-if (pedido.getId() == idPedido) {
+		logger.info("pedido " + item.getIdPedido() + " removeu o produto " + item.getItem().getIdProduto());
 
-pedido.setStatus(StatusPedido.CONCLUIDO);
+	}
 
-}
+	@PUT
+	@Path("pedido/{idPedido}")
+	public void pagaPedido(@PathParam("idPedido") long idPedido) {
 
-}
+		for (Pedido pedido : pedidosMock) {
 
-logger.info("pedido " + idPedido + " efetivado");
+			if (pedido.getId() == idPedido) {
 
-}
+				pedido.setStatus(StatusPedido.CONCLUIDO);
 
-@DELETE
-@Path("pedido")
-public void cancelaPedido(@PathParam("idPedido") long idPedido) {
+			}
 
-for (Pedido pedido : pedidosMock) {
+		}
 
-if (pedido.getId() == idPedido) {
+		logger.info("pedido " + idPedido + " efetivado");
 
-pedido.setStatus(StatusPedido.CANCELADO);
+	}
 
-}
+	@DELETE
+	@Path("pedido/{idPedido}")
+	public void cancelaPedido(@PathParam("idPedido") long idPedido) {
 
-}
+		for (Pedido pedido : pedidosMock) {
 
-logger.info("pedido " + idPedido + " cancelado");
+			if (pedido.getId() == idPedido) {
 
-}
+				pedido.setStatus(StatusPedido.CANCELADO);
+
+			}
+
+		}
+
+		logger.info("pedido " + idPedido + " cancelado");
+
+	}
 
 }
