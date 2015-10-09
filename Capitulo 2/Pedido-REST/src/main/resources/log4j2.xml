@@ -18,6 +18,7 @@
             <Field name="className" pattern="%C" />
             <Field name="server" pattern="%host" />
             <Field name="server.fqdn" pattern="%host{fqdn}" />
+
             <Field name="mdcField2" mdc="mdcField2" /> 
             <DynamicMdcFields regex="mdc.*" />
             <DynamicMdcFields regex="(mdc|MDC)fields" />
