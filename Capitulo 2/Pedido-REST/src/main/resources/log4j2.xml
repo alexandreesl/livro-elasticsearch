@@ -9,12 +9,15 @@
 			<PatternLayout
 				pattern="%d{yyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
 		</File>
-
+		<Socket name="Socket" host="127.0.0.1" port="9500" protocol="tcp" >
+			<JSONLayout complete="true" charset="UTF-8" />
+		</Socket>
 	</Appenders>
 	<Loggers>
 		<Root level="info">
 			<AppenderRef ref="Console" />
 			<AppenderRef ref="File" />
+			<AppenderRef ref="Socket" />
 		</Root>
 	</Loggers>
 </Configuration>
