@@ -97,12 +97,6 @@ public class ClienteRestService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public void addCliente(Cliente cliente) {
 
-		contadorErroCaotico++;
-
-		if ((contadorErroCaotico) % 7 == 0) {
-			throw new RuntimeException("Ocorreu um erro caótico!");
-		}
-
 		logger.warn("O cliente " + cliente.getId() + " foi inserido!");
 
 		clientes.put(cliente.getId(), cliente);
@@ -112,6 +106,12 @@ public class ClienteRestService {
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
 	public void mergeCliente(Cliente cliente) {
+
+		contadorErroCaotico++;
+
+		if ((contadorErroCaotico) % 7 == 0) {
+			throw new RuntimeException("Ocorreu um erro caótico!");
+		}
 
 		logger.info("O cliente " + cliente.getId() + " foi alterado!");
 
