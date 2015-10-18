@@ -68,7 +68,7 @@ public class PedidoRestService {
 
 		contadorErroCaotico++;
 
-		if ((contadorErroCaotico * Math.random()) / 6 == 0) {
+		if ((contadorErroCaotico * Math.random()) % 2 == 0) {
 			throw new RuntimeException("Ocorreu um erro caótico!");
 		}
 
