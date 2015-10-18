@@ -125,7 +125,7 @@ public class ClienteRestService {
 	@DELETE
 	public void deleteCliente(@QueryParam("id") long id) {
 
-		logger.info("O cliente " + id + " foi alterado!");
+		logger.info("O cliente " + id + " foi excluído!");
 
 		clientes.remove(id);
 	}
