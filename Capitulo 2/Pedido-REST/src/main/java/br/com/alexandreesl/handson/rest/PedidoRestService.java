@@ -74,12 +74,16 @@ public class PedidoRestService {
 
 		// se for pedido novo, cria, senao somente adiciona o item
 
+		long idCliente = 0;
+
 		boolean pedidoNovo = true;
 
 		for (Pedido pedido : pedidosMock) {
 
 			if (pedido.getId() == item.getIdPedido()) {
 				pedido.getItems().add(item.getItem());
+
+				idCliente = pedido.getIdCliente();
 
 				pedidoNovo = false;
 			}
@@ -89,6 +93,7 @@ public class PedidoRestService {
 		if (pedidoNovo) {
 			Pedido pedido = new Pedido();
 
+			idCliente = item.getIdCliente();
 			pedido.setId(item.getIdPedido());
 			pedido.setDataPedido(new Date());
 			pedido.setIdCliente(item.getIdCliente());
@@ -99,7 +104,8 @@ public class PedidoRestService {
 
 		}
 
-		logger.info("pedido " + item.getIdPedido() + " adicionou o produto " + item.getItem().getIdProduto());
+		logger.info("pedido " + item.getIdPedido() + " do cliente " + idCliente + " adicionou o produto "
+				+ item.getItem().getIdProduto());
 
 	}
 
@@ -108,16 +114,22 @@ public class PedidoRestService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public void removeItemPedido(ItemPedidoDTO item) {
 
+		long idCliente = 0;
+
 		for (Pedido pedido : pedidosMock) {
 
 			if (pedido.getId() == item.getIdPedido()) {
+
 				pedido.getItems().remove(item.getItem());
+
+				idCliente = pedido.getIdCliente();
 
 			}
 
 		}
 
-		logger.info("pedido " + item.getIdPedido() + " removeu o produto " + item.getItem().getIdProduto());
+		logger.info("pedido " + item.getIdPedido() + " do cliente " + idCliente + " removeu o produto "
+				+ item.getItem().getIdProduto());
 
 	}
 
