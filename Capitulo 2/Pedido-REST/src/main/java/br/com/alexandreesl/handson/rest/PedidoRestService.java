@@ -99,7 +99,8 @@ public class PedidoRestService {
 
 		}
 
-		logger.info("pedido " + item.getIdPedido() + " adicionou o produto " + item.getItem().getIdProduto());
+		logger.info("pedido " + item.getIdPedido() + " do cliente " + item.getIdCliente() + " adicionou o produto "
+				+ item.getItem().getIdProduto());
 
 	}
 
@@ -117,7 +118,8 @@ public class PedidoRestService {
 
 		}
 
-		logger.info("pedido " + item.getIdPedido() + " removeu o produto " + item.getItem().getIdProduto());
+		logger.info("pedido " + item.getIdPedido() + " do cliente " + item.getIdCliente() + " removeu o produto "
+				+ item.getItem().getIdProduto());
 
 	}
 
