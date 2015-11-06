@@ -1,0 +1,41 @@
+# mapeamentos
+
+curl -XPUT 'localhost:9200/loja/categoria/_mapping' -d '{
+  "categoria" : {
+  "_parent" : { "type" : "categoria" },
+    "properties" : {
+      "nome" : {"type" : "string"}
+    }
+} }'
+
+curl -XPUT 'localhost:9200/loja/produto/_mapping' -d '{
+  "produto" : {
+  "_parent" : { "type" : "categoria" },
+    "properties" : {
+      "sku" : {"type" : "integer"},
+      "nome" : {"type" : "string"},
+      "descricao" : {"type" : "string"},
+      "estoque" : {"type" : "integer"}
+    }
+} }'
+
+# categorias
+
+curl -XPOST 'localhost:9200/loja/categoria?parent=categoria1' -d '{ "nome" : "categoria1"  }'
+curl -XPOST 'localhost:9200/loja/categoria?parent=categoria1' -d '{ "nome" : "subcategoria11" }'
+curl -XPOST 'localhost:9200/loja/categoria?parent=categoria1' -d '{ "nome" : "subcategoria12" }'
+curl -XPOST 'localhost:9200/loja/categoria?parent=categoria1' -d '{ "nome" : "subcategoria13" }'
+curl -XPOST 'localhost:9200/loja/categoria?parent=categoria1' -d '{ "nome" : "subcategoria14" }'
+curl -XPOST 'localhost:9200/loja/categoria?parent=categoria2' -d '{ "nome" : "categoria2"  }'
+curl -XPOST 'localhost:9200/loja/categoria?parent=categoria2' -d '{ "nome" : "subcategoria21" }'
+curl -XPOST 'localhost:9200/loja/categoria?parent=categoria2' -d '{ "nome" : "subcategoria22" }'
+curl -XPOST 'localhost:9200/loja/categoria?parent=categoria3' -d '{ "nome" : "categoria3"  }'
+
+# produtos
+
+curl -XPOST 'localhost:9200/loja/produto?parent=subcategoria11' -d '{ "sku" : 234565678,"nome":"produto 1","descricao":"esta é a descrição do produto 1","estoque":23 }'
+curl -XPOST 'localhost:9200/loja/produto?parent=subcategoria13' -d '{ "sku" : 234567288,"nome":"produto 2","descricao":"esta é a descrição do produto 2","estoque":3 }'
+curl -XPOST 'localhost:9200/loja/produto?parent=subcategoria13' -d '{ "sku" : 147567288,"nome":"produto 3","descricao":"esta é a descrição do produto 3","estoque":13 }'
+curl -XPOST 'localhost:9200/loja/produto?parent=subcategoria14' -d '{ "sku" : 234561828,"nome":"produto 4","descricao":"esta é a descrição do produto 4","estoque":3 }'
+curl -XPOST 'localhost:9200/loja/produto?parent=subcategoria22' -d '{ "sku" : 231007288,"nome":"produto 5","descricao":"esta é a descrição do produto 5","estoque":35 }'
+curl -XPOST 'localhost:9200/loja/produto?parent=categoria3' -d '{ "sku" : 234567900,"nome":"produto 6","descricao":"esta é a descrição do produto 6","estoque":89 }'
