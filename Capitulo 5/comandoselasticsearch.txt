@@ -2,7 +2,6 @@
 
 curl -XPUT 'localhost:9200/loja/categoria/_mapping' -d '{
   "categoria" : {
-  "_parent" : { "type" : "categoria" },
     "properties" : {
       "nome" : {"type" : "string"}
     }
@@ -15,28 +14,35 @@ curl -XPUT 'localhost:9200/loja/produto/_mapping' -d '{
       "sku" : {"type" : "integer"},
       "nome" : {"type" : "string"},
       "descricao" : {"type" : "string"},
+      "marca" : {"type" : "string"},
       "estoque" : {"type" : "integer"}
     }
 } }'
 
-# categorias
+#categorias
 
-curl -XPOST 'localhost:9200/loja/categoria?parent=Eletro&routing=Eletro' -d '{ "nome" : "Eletro"  }'
-curl -XPOST 'localhost:9200/loja/categoria?parent=Eletro&routing=Eletro' -d '{ "nome" : "Geladeiras" }'
-curl -XPOST 'localhost:9200/loja/categoria?parent=Eletro&routing=Eletro' -d '{ "nome" : "Fogões" }'
-curl -XPOST 'localhost:9200/loja/categoria?parent=Eletro&routing=Eletro' -d '{ "nome" : "Ar-condicionados" }'
-curl -XPOST 'localhost:9200/loja/categoria?parent=Eletro&routing=Eletro' -d '{ "nome" : "Aspiradores" }'
-curl -XPOST 'localhost:9200/loja/categoria?parent=Vestuário&routing=Vestuário' -d '{ "nome" : "Vestuário"  }'
-curl -XPOST 'localhost:9200/loja/categoria?parent=Vestuário&routing=Vestuário' -d '{ "nome" : "Masculino" }'
-curl -XPOST 'localhost:9200/loja/categoria?parent=Vestuário&routing=Vestuário' -d '{ "nome" : "Feminino" }'
-curl -XPOST 'localhost:9200/loja/categoria?parent=Lar&routing=Lar' -d '{ "nome" : "Lar"  }'
+curl -XPOST 'localhost:9200/loja/categoria/Geladeiras?routing=Eletro' -d '{ "nome" : "Geladeiras" }'
+curl -XPOST 'localhost:9200/loja/categoria/Fogões?routing=Eletro' -d '{ "nome" : "Fogões" }'
+curl -XPOST 'localhost:9200/loja/categoria/Ar-condicionados?routing=Eletro' -d '{ "nome" : "Ar-condicionados" }'
+curl -XPOST 'localhost:9200/loja/categoria/Aspiradores?routing=Eletro' -d '{ "nome" : "Aspiradores" }'
+curl -XPOST 'localhost:9200/loja/categoria/Masculino?routing=Vestuário' -d '{ "nome" : "Masculino" }'
+curl -XPOST 'localhost:9200/loja/categoria/Feminino?routing=Vestuário' -d '{ "nome" : "Feminino" }'
+curl -XPOST 'localhost:9200/loja/categoria/Lar?routing=Lar' -d '{ "nome" : "Lar"  }'
+
+#produtos
+
+curl -XPOST 'localhost:9200/loja/produto?parent=Geladeiras&routing=Eletro' -d '{ "sku" : 234565678,"nome":"produto 1", "marca": "marcaA","descricao":"esta é a descrição do produto 1","estoque":23 }'
+curl -XPOST 'localhost:9200/loja/produto?parent=Fogões&routing=Eletro' -d '{ "sku" : 234567288,"nome":"produto 12", "marca": "marcaA","descricao":"esta é a descrição do produto 12","estoque":3 }'
+curl -XPOST 'localhost:9200/loja/produto?parent=Fogões&routing=Eletro' -d '{ "sku" : 234567289,"nome":"produto 13", "marca": "marcaB","descricao":"esta é a descrição do produto 13","estoque":7 }'
+curl -XPOST 'localhost:9200/loja/produto?parent=Fogões&routing=Eletro' -d '{ "sku" : 234567290,"nome":"produto 14", "marca": "marcaC","descricao":"esta é a descrição do produto 14","estoque":11 }'
+curl -XPOST 'localhost:9200/loja/produto?parent=Fogões&routing=Eletro' -d '{ "sku" : 234567291,"nome":"produto 15", "marca": "marcaB","descricao":"esta é a descrição do produto 15","estoque":16 }'
+curl -XPOST 'localhost:9200/loja/produto?parent=Fogões&routing=Eletro' -d '{ "sku" : 234567292,"nome":"produto 16", "marca": "marcaA","descricao":"esta é a descrição do produto 16","estoque":20 }'
+curl -XPOST 'localhost:9200/loja/produto?parent=Fogões&routing=Eletro' -d '{ "sku" : 234567293,"nome":"produto 17", "marca": "marcaA","descricao":"esta é a descrição do produto 17","estoque":33 }'
 
 
-# produtos
-
-curl -XPOST 'localhost:9200/loja/produto?parent=Geladeiras&routing=Eletro' -d '{ "sku" : 234565678,"nome":"produto 1","descricao":"esta é a descrição do produto 1","estoque":23 }'
-curl -XPOST 'localhost:9200/loja/produto?parent=Fogões&routing=Eletro' -d '{ "sku" : 234567288,"nome":"produto 2","descricao":"esta é a descrição do produto 2","estoque":3 }'
-curl -XPOST 'localhost:9200/loja/produto?parent=Aspiradores&routing=Eletro' -d '{ "sku" : 147567288,"nome":"produto 3","descricao":"esta é a descrição do produto 3","estoque":13 }'
-curl -XPOST 'localhost:9200/loja/produto?parent=Ar-condicionados&routing=Eletro' -d '{ "sku" : 234561828,"nome":"produto 4","descricao":"esta é a descrição do produto 4","estoque":3 }'
-curl -XPOST 'localhost:9200/loja/produto?parent=Masculino&routing=Vestuário' -d '{ "sku" : 231007288,"nome":"produto 5","descricao":"esta é a descrição do produto 5","estoque":35 }'
-curl -XPOST 'localhost:9200/loja/produto?parent=Lar&routing=Lar' -d '{ "sku" : 234567900,"nome":"produto 6","descricao":"esta é a descrição do produto 6","estoque":89 }'
+curl -XPOST 'localhost:9200/loja/produto?parent=Aspiradores&routing=Eletro' -d '{ "sku" : 147567288,"nome":"produto 33", "marca": "marcaA","descricao":"esta é a descrição do produto 33","estoque":67 }'
+curl -XPOST 'localhost:9200/loja/produto?parent=Aspiradores&routing=Eletro' -d '{ "sku" : 147567289,"nome":"produto 34", "marca": "marcaA","descricao":"esta é a descrição do produto 34","estoque":23 }'
+curl -XPOST 'localhost:9200/loja/produto?parent=Aspiradores&routing=Eletro' -d '{ "sku" : 147567290,"nome":"produto 35", "marca": "marcaA","descricao":"esta é a descrição do produto 35","estoque":53 }'
+curl -XPOST 'localhost:9200/loja/produto?parent=Ar-condicionados&routing=Eletro' -d '{ "sku" : 234561828,"nome":"produto 4", "marca": "marcaB","descricao":"esta é a descrição do produto 4","estoque":3 }'
+curl -XPOST 'localhost:9200/loja/produto?parent=Masculino&routing=Vestuário' -d '{ "sku" : 231007288,"nome":"produto 5", "marca": "marcaF","descricao":"esta é a descrição do produto 5","estoque":35 }'
+curl -XPOST 'localhost:9200/loja/produto?parent=Lar&routing=Lar' -d '{ "sku" : 234567900,"nome":"produto 6", "marca": "marcaH","descricao":"esta é a descrição do produto 6","estoque":89 }'
