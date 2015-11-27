@@ -25,7 +25,7 @@ import br.com.alexandreesl.handson.dto.ItemPedidoDTO;
 @Named
 @Path("/")
 public class PedidoRestService {
-
+ 
 	private static List<Pedido> pedidosMock = new ArrayList<Pedido>();
 
 	private static final Logger logger = LogManager.getLogger(PedidoRestService.class.getName());
