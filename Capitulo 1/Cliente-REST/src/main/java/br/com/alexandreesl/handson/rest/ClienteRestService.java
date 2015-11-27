@@ -113,11 +113,6 @@ public class ClienteRestService {
 			throw new RuntimeException("Ocorreu um erro caótico!");
 		}
 
-		contadorErroCaotico++;
-
-		if ((contadorErroCaotico) % 7 == 0) {
-			throw new RuntimeException("Ocorreu um erro caótico!");
-		}
 
 		logger.info("O cliente " + cliente.getId() + " foi alterado!");
 
